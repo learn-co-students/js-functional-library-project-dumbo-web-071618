@@ -284,3 +284,7 @@ describe('index.js', function () {
       expect(arraysEqual(fi.functions(testObject), final)).to.equal(true)
     })
   })
+
+  
+
+})
