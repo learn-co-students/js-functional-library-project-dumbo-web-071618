@@ -101,63 +101,99 @@ fi = (function() {
       }));
 
     },
+    
+    flatten: function(array, shallow = false) {
+      let result = [];
 
-    flatten: function(array, shallow) {
-      let newArr = [];
-      for (let element in array) {
-        if (typeof array[element] === "object" ) {
-          return this.flatten(array[element]);
+      function flatten_helper(array) {
+        if (shallow === false) {
+
+          if (typeof array === "object") {
+            for (const key in array) {
+              flatten_helper(array[key]);
+            }
+
+          } else {
+            result.push(array);
+
+          }
         } else {
-          newArr.push(array[element]);
+
+          for (const key in array) {
+            if (typeof array[key] === "object") {
+              for (const nestedKey in array[key]) {
+                result.push(array[key][nestedKey]);
+              }
+            } else {
+              result.push(array[key])
+            }
+          }
+        }
+
+      }
+      flatten_helper(array);
+      return result;
+    },
+
+    keys: function(object) {
+      let newArr = [];
+      for (var key in object) {
+        newArr.push(key);
+      }
+      return newArr;
+    },
+
+    values: function(object) {
+      let newArr = [];
+      for (var key in object) {
+        newArr.push(object[key]);
+      }
+      return newArr;
+    },
+
+    functions: function(object) {
+      let newArr = [];
+      for (var element in object) {
+        if (object[element] instanceof Function) {
+          newArr.push(element);
         }
       }
       return newArr;
     },
-    boop: function(){
 
+    giveMeMore: function() {
+      return false
     },
-    boop: function(){
 
-    },
-    boop: function(){
-
-    },
-    boop: function(){
-
-    },
-    boop: function(){
-
+    uniq: function(array, isSorted, callback) {
+      let cbArr = [];
+      let newArr = [];
+      if (callback === undefined) {
+        for (var i = 0; i < array.length; i++) {
+          let element = array[i];
+          if (!newArr.includes(element)) {
+            newArr.push(element);
+          } else {
+            continue;
+          }
+        }
+      } else {
+        for (var i = 0; i < array.length; i++) {
+          let element = array[i];
+          if (!cbArr.includes(callback(element))) {
+            cbArr.push(callback(element))
+            newArr.push(element);
+          } else {
+            continue;
+          }
+        }
+      }
+      if (isSorted) {
+        return newArr.sort();
+      } else {
+        return newArr;
+      }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
 })()
 
